@@ -8,14 +8,17 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-import { useLoginModal } from "@/app/hooks/useLoginModal";
-import { Modal, Button, Heading, Input } from "../paths";
+import { useLoginModal, useRegisterModal } from "@/app/hooks";
+import { Modal, Button, Heading, Input, RegisterModal } from "../paths";
 
 interface LoginModalProps {}
 
 export const LoginModal: FC<LoginModalProps> = ({}) => {
   const router = useRouter();
+
   const loginModal = useLoginModal();
+  const registerModal = useRegisterModal();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -49,6 +52,11 @@ export const LoginModal: FC<LoginModalProps> = ({}) => {
       }
     });
   };
+
+  const onToggle = useCallback(() => {
+    loginModal.onClose();
+    registerModal.onOpen();
+  }, [loginModal, registerModal]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
@@ -98,9 +106,9 @@ export const LoginModal: FC<LoginModalProps> = ({}) => {
         "
       >
         <p>
-          Already have an account?
+          First time using Airbnb?
           <span
-            // onClick={onToggle}
+            onClick={onToggle}
             className="
               text-neutral-800
               cursor-pointer 
@@ -108,7 +116,7 @@ export const LoginModal: FC<LoginModalProps> = ({}) => {
             "
           >
             {` `}
-            Log in
+            Create an account?
           </span>
         </p>
       </div>

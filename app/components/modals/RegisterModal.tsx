@@ -8,13 +8,15 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { signIn } from "next-auth/react";
 
-import { useRegisterModal } from "../../hooks/useRegisterModal";
+import { useLoginModal, useRegisterModal } from "@/app/hooks";
 import { Modal, Heading, Button, Input } from "../paths";
 
 interface RegisterModalProps {}
 
 export const RegisterModal: FC<RegisterModalProps> = ({}) => {
+  const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -44,6 +46,11 @@ export const RegisterModal: FC<RegisterModalProps> = ({}) => {
         setIsLoading(false);
       });
   };
+
+  const onToggle = useCallback(() => {
+    registerModal.onClose();
+    loginModal.onOpen();
+  }, [loginModal, registerModal]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
@@ -104,7 +111,7 @@ export const RegisterModal: FC<RegisterModalProps> = ({}) => {
         <p>
           Already have an account?
           <span
-            // onClick={onToggle}
+            onClick={onToggle}
             className="
               text-neutral-800
               cursor-pointer 
