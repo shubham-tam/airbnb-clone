@@ -4,9 +4,8 @@ import "./globals.css";
 
 import { Navbar } from "./components/navbar/Navbar";
 import { ClientOnly } from "./components/ClientOnly";
-import { RegisterModal } from "./components/modals/RegisterModal";
 import { ToasterProvider } from "./providers/ToasterProvider";
-import { LoginModal } from "./components/modals/LoginModal";
+import { RegisterModal, LoginModal } from "./components/modals";
 import getCurrentUser from "./actions/getCurrentUser";
 
 const font = Nunito({ subsets: ["latin"] });

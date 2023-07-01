@@ -1,13 +1,12 @@
 "use client";
 
 import { FC } from "react";
-import { User } from "@prisma/client";
 
-import { Container } from "../Container";
-import { Logo, Search, UserMenu } from "./index";
+import { SafeUser } from "@/app/types";
+import { Container, Logo, Search, UserMenu, Categories } from "../paths";
 
 interface NavbarProps {
-  currentUser?: User | null;
+  currentUser?: SafeUser | null;
 }
 
 export const Navbar: FC<NavbarProps> = (props) => {
@@ -24,6 +23,7 @@ export const Navbar: FC<NavbarProps> = (props) => {
           </div>
         </Container>
       </div>
+      <Categories />
     </div>
   );
 };
