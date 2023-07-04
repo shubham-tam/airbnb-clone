@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 import { useLoginModal, useRegisterModal } from "@/app/hooks";
-import { Modal, Button, Heading, Input, RegisterModal } from "../paths";
+import { Modal, Button, Heading, RegisterModal, Input } from "../paths";
 
 interface LoginModalProps {}
 

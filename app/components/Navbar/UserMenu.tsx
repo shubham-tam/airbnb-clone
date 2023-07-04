@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useState, useRef, useEffect } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { signOut } from "next-auth/react";
 
@@ -20,15 +20,34 @@ export const UserMenu: FC<UserMenuProps> = (props) => {
   const loginModal = useLoginModal();
   const [isOpen, setIsOpen] = useState(false);
 
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  const handleClickOutsideOfReportTitle = (e: MouseEvent) => {
+    if (!userMenuRef?.current?.contains(e.target as Node)) {
+      setIsOpen(false);
+    }
+  };
+
   const toggelOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
 
+  const onRent = useCallback(() => {
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
+  }, [currentUser, loginModal]);
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutsideOfReportTitle, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <div className="relative">
+    <div className="relative" ref={userMenuRef}>
       <div className="flex flex-row items-center gap-3">
         <div
-          onClick={() => {}}
+          onClick={onRent}
           className="hidden md:block text-sm font-semibold py-2 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
         >
           Airbnb your home
