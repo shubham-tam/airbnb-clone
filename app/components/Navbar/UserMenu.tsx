@@ -1,13 +1,17 @@
 "use client";
 
-import { FC, useCallback, useState, useRef, useEffect } from "react";
+import { FC, useCallback, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { signOut } from "next-auth/react";
 
 import { Avatar, MenuItem } from "../paths";
-import { useRegisterModal } from "@/app/hooks/useRegisterModal";
-import { useLoginModal } from "@/app/hooks/useLoginModal";
 import { SafeUser } from "@/app/types";
+import {
+  useRegisterModal,
+  useLoginModal,
+  useRentModal,
+  useCloseModal,
+} from "@/app/hooks";
 
 interface UserMenuProps {
   currentUser?: SafeUser | null;
@@ -16,17 +20,12 @@ interface UserMenuProps {
 export const UserMenu: FC<UserMenuProps> = (props) => {
   const { currentUser } = props;
 
-  const registerModal = useRegisterModal();
-  const loginModal = useLoginModal();
   const [isOpen, setIsOpen] = useState(false);
 
-  const userMenuRef = useRef<HTMLDivElement>(null);
-
-  const handleClickOutsideOfReportTitle = (e: MouseEvent) => {
-    if (!userMenuRef?.current?.contains(e.target as Node)) {
-      setIsOpen(false);
-    }
-  };
+  const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
+  const rentModal = useRentModal();
+  const userMenuRef = useCloseModal(() => setIsOpen(false));
 
   const toggelOpen = useCallback(() => {
     setIsOpen((value) => !value);
@@ -36,12 +35,8 @@ export const UserMenu: FC<UserMenuProps> = (props) => {
     if (!currentUser) {
       return loginModal.onOpen();
     }
-  }, [currentUser, loginModal]);
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutsideOfReportTitle, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    rentModal.onOpen();
+  }, [currentUser, loginModal, rentModal]);
 
   return (
     <div className="relative" ref={userMenuRef}>
@@ -71,9 +66,8 @@ export const UserMenu: FC<UserMenuProps> = (props) => {
                 <MenuItem onClick={() => {}} label="My favourites" />
                 <MenuItem onClick={() => {}} label="My reservations" />
                 <MenuItem onClick={() => {}} label="My properties" />
-                <MenuItem onClick={() => {}} label="Airbnb my home" />
+                <MenuItem onClick={rentModal.onOpen} label="Airbnb my home" />
                 <hr />
-
                 <MenuItem onClick={() => signOut()} label="Logout" />
               </>
             ) : (

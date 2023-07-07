@@ -1,9 +1,10 @@
 "use client";
 
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState, useRef } from "react";
 import { IoMdClose } from "react-icons/io";
 
 import { Button } from "../paths";
+import { useCloseModal } from "@/app/hooks";
 
 interface ModalProps {
   isOpen?: boolean;
@@ -16,6 +17,7 @@ interface ModalProps {
   disabled?: boolean;
   secondaryAction?: () => void;
   secondaryActionLabel?: string;
+  secondaryButtonDisabled?: boolean;
 }
 
 export const Modal: FC<ModalProps> = ({
@@ -29,6 +31,7 @@ export const Modal: FC<ModalProps> = ({
   disabled,
   secondaryAction,
   secondaryActionLabel,
+  secondaryButtonDisabled,
 }) => {
   const [showModal, setShowModal] = useState(isOpen);
 
@@ -37,15 +40,11 @@ export const Modal: FC<ModalProps> = ({
   }, [isOpen]);
 
   const handleClose = useCallback(() => {
-    if (disabled) {
-      return;
-    }
-
     setShowModal(false);
     setTimeout(() => {
       onClose();
     }, 300);
-  }, [onClose, disabled]);
+  }, [onClose]);
 
   const handleSubmit = useCallback(() => {
     if (disabled) {
@@ -62,6 +61,11 @@ export const Modal: FC<ModalProps> = ({
 
     secondaryAction();
   }, [secondaryAction, disabled]);
+
+  const userMenuRef = useCloseModal(() => {
+    setShowModal(!showModal);
+    onClose();
+  });
 
   if (!isOpen) {
     return null;
@@ -97,6 +101,7 @@ export const Modal: FC<ModalProps> = ({
           lg:h-auto
           md:h-auto
           "
+          ref={userMenuRef}
         >
           {/*content*/}
           <div
@@ -168,7 +173,7 @@ export const Modal: FC<ModalProps> = ({
                 >
                   {secondaryAction && secondaryActionLabel && (
                     <Button
-                      disabled={disabled}
+                      disabled={secondaryButtonDisabled}
                       label={secondaryActionLabel}
                       onClick={handleSecondaryAction}
                       outline

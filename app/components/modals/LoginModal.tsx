@@ -8,18 +8,18 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
+import { Modal, Button, Heading, Input } from "../paths";
 import { useLoginModal, useRegisterModal } from "@/app/hooks";
-import { Modal, Button, Heading, RegisterModal, Input } from "../paths";
 
 interface LoginModalProps {}
 
 export const LoginModal: FC<LoginModalProps> = ({}) => {
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,

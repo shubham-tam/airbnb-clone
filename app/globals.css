@@ -8,6 +8,15 @@ body,
   height: 100%;
 }
 
+.leaflet-bottom,
+.leaflet-control,
+.leaflet-pane,
+.leaflet-top {
+  z-index: 0 !important;
+}
+
+/* ? scrollbar style CSS */
+
 /* width */
 ::-webkit-scrollbar {
   width: 5px;

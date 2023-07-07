@@ -31,7 +31,7 @@ export const Input: FC<InputProps> = ({
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
-    setInputType((prevType) => (prevType === "password" ? "text" : "password")); // Toggle input type
+    setInputType((prevType) => (prevType === "password" ? "text" : "password"));
   };
 
   return (
